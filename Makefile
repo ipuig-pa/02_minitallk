@@ -2,6 +2,7 @@ NAME = minitalk
 
 SOURCES = server.c client.c
 OBJECTS = $(SOURCES:%.c=%.o)
+HEADER = minitalk.h
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -11,9 +12,7 @@ FT_PRINTF= $(FT_PRINTF_DIR)/libftprintf.a
 
 CFLAGS = -Wall -Wextra -Werror
 
-all: $(NAME)
-
-$(NAME): server client
+all: server client
 
 server: server.o $(LIBFT) $(FT_PRINTF)
 	cc $(CFLAGS) -o server $^
@@ -21,7 +20,7 @@ server: server.o $(LIBFT) $(FT_PRINTF)
 client: client.o $(LIBFT) $(FT_PRINTF)
 	cc $(CFLAGS) -o client $^
 
-%.o: %.c
+%.o: %.c $(HEADER)
 	cc $(CFLAGS) -c $< -o $@ 
 
 $(LIBFT):

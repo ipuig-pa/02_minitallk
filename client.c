@@ -6,13 +6,11 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 10:32:43 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/11/21 11:44:42 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/11/21 12:52:12 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <signal.h>
-#include "libft/libft.h"
-#include "ft_printf/ft_printf.h"
+#include "minitalk.h"
 
 void	str_to_binary(char *str, int *binary_str, int len);
 void	send_to_server(int *binary_str, int pid, int size);
@@ -26,11 +24,12 @@ int	main(int argc, char **argv)
 	if (argc != 3)
 		return (ft_printf("Wrong number of arguments\n"), 1);
 	server_pid = ft_atoi(argv[1]);
-	if (!server_pid)
+	if (!server_pid || server_pid < 0)
 		return (ft_printf("Wrong arg PID\n"), 1);
 	len = ft_strlen(argv[2]);
 	if (len == 0)
-		return (ft_printf("Wrong arg string. Write the message to send to the server\n"), 1);
+		return (ft_printf("Wrong arg string. \
+		Write the message to send to the server\n"), 1);
 	binary_str = (int *)malloc((len + 1) * 8 * sizeof(int));
 	if (!binary_str)
 		return (1);
@@ -80,7 +79,6 @@ void	send_to_server(int *binary_str, int pid, int size)
 		if (binary_str[i] == 1)
 			signal = SIGUSR2;
 		kill(pid, signal);
-		//mirar si puc rebaixar temps
 		usleep(50);
 		i++;
 	}
