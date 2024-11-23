@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 10:32:43 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/11/21 12:52:12 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/11/23 12:22:16 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	str_to_binary(char *str, int *binary_str, int len);
 void	send_to_server(int *binary_str, int pid, int size);
+int		*to_binary(int c, int *binary_num);
 
 int	main(int argc, char **argv)
 {
@@ -30,6 +31,11 @@ int	main(int argc, char **argv)
 	if (len == 0)
 		return (ft_printf("Wrong arg string. \
 		Write the message to send to the server\n"), 1);
+	binary_str = (int *)malloc(8 * 8 * sizeof(int));
+	if (!binary_str)
+		return (1);
+	send_to_server(to_binary(len, binary_str), server_pid, 8 * 8);
+	free(binary_str);
 	binary_str = (int *)malloc((len + 1) * 8 * sizeof(int));
 	if (!binary_str)
 		return (1);
@@ -37,6 +43,29 @@ int	main(int argc, char **argv)
 	send_to_server(binary_str, server_pid, ((len + 1) * 8));
 	free(binary_str);
 	return (0);
+}
+
+int	*to_binary(int c, int *binary_num)
+{
+	int	bit_count;
+	int	i;
+
+	bit_count = 0;
+	i = (8 * 8) - 1;
+	while (c != 0)
+	{
+		binary_num[i] = c % 2;
+		c = c / 2;
+		bit_count++;
+		i--;
+	}
+	while (bit_count < 8 * 8)
+	{
+		binary_num[i] = 0;
+		bit_count++;
+		i--;
+	}
+	return (binary_num);
 }
 
 void	str_to_binary(char *str, int *binary_str, int len)
