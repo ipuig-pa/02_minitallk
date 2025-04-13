@@ -6,6 +6,10 @@
 
 This project consists on creating a communication program implementing a client-server architecture using UNIX signals. It demonstrates inter-process communication in a Unix environment by transmitting strings between two separate programs using only signals.
 
+### Resources
+
+- Custom libft and ft_printf library
+
 ## Compilation
 
 ---
